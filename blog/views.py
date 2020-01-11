@@ -41,6 +41,7 @@ class PostListView(ListView):
     paginate_by = 3
     template_name = 'blog/static/index.html'
 
+
 def post_list(request, tag_slug=None, category_slug=None):
     object_list = Post.published.all()
     tag = None
@@ -101,7 +102,8 @@ def post_detail(request,year, month, day, post):
     post_tags_ids = post.tags.values_list('id', flat=True)
     similar_tags = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
     similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags','-publish')[:4]
-    return render(request, 'blog/static/detail.html',{'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form, 'similar_posts': similar_posts, 'tags': tags})
+    context = {'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form, 'similar_posts': similar_posts, 'tags': tags}
+    return render(request, 'blog/static/detail.html', context)
 
 
 # @register.inclusion_tag('blog/static/tags.html', takes_context=True)
@@ -186,5 +188,6 @@ def update_post(request, id):
         str_tags = ''
         for tag in post.tags.all():
             str_tags += (str(tag ) + ',')
-        context = {'post':post,'update_post_form': update_post_form, 'categories':categories, 'tags':tags, 'str_tags':str_tags}
+        context = {'post': post, 'update_post_form': update_post_form, 'categories': categories, 'tags': tags, 'str_tags': str_tags}
         return render(request, 'blog/static/update_post.html', context)
+
