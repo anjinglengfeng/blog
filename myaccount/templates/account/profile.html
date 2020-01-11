@@ -1,26 +1,49 @@
-
-{% extends "account/base.html" %}
+{% extends "blog/static/base.html" %}
+{% load blog_tags %}
+{% load static %}
 {% load i18n %}
+
 
 {% block title %}个人详情{% endblock %}
 
-
-{% block content %}
-{% if user.is_authenticated %}
-<a href="{% url 'myaccount:profile_update' %}">更新资料</a> | <a href="{% url 'account_email' %}">邮箱验证</a>  | <a href="{% url 'account_change_password' %}">修改密码</a> |
-<a href="{% url 'account_logout' %}">退出登录</a>
-{% endif %}
-<p>你好, {{ user.username }}
-    {% if not user.profile.account_verified %}
-        (Unverified email.)
-    {% endif %}
-</p>
-<h2>我的个人资料</h2>
-<ul>
-    <li>姓: {{ user.first_name }} </li>
-    <li>名: {{ user.last_name }} </li>
-    <li>组织: {{ user.profile.org }} </li>
-    <li>电话: {{ user.profile.telephone }} </li>
-</ul>
-    {% include 'blog/static/list.html' %}
+{% block content-wrap %}
+<section class="container container-page">
+  <div class="pageside">
+    <div class="pagemenus">
+        <div>个人信息</div>
+             <ul class="pagemenu">
+                <li><a href="{% url 'myaccount:profile_update' %}">更新资料</a></li>
+                <li><a href="{% url 'account_email' %}">邮箱验证</a></li>
+                <li><a href="{% url 'account_change_password' %}">修改密码</a></li>
+             </ul>
+       <div>个人记录</div>
+            <ul class="pagemenu">
+                <li><a href="{% url 'myaccount:profile_update' %}">发表过的文章</a></li>
+                <li><a href="{% url 'account_email' %}">浏览文章记录</a></li>
+                <li><a href="{% url 'account_change_password' %}">评论过的文章</a></li>
+            </ul>
+    </div>
+  </div>
+  <div class="content">
+    <header class="article-header">
+      <h1 class="article-title">我的个人资料</h1>
+    </header>
+      <p>你好, {{ user.username }}
+        {% if not user.profile.account_verified %}
+            (您的邮箱还未验证)
+        {% endif %}
+      </p>
+    <div>
+        <ul>
+            <li>姓: {{ user.first_name }} </li>
+            <li>名: {{ user.last_name }} </li>
+            <li>组织: {{ user.profile.org }} </li>
+            <li>电话: {{ user.profile.telephone }} </li>
+        </ul>
+    </div>
+  </div>
+</section>
 {% endblock %}
+
+
+
