@@ -1,0 +1,127 @@
+{% load blog_tags %}
+{% load static %}
+
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_681895_ufv8ns8pw60z4cxr.css">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/nprogress.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}">
+    <link rel="apple-touch-icon-precomposed" href="{% static 'images/icon/icon.png' %}">
+    <link rel="shortcut icon" href="{% static 'images/icon/favicon.ico' %}">
+    <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+    <script src="{% static 'js/nprogress.js' %}"></script>
+    <script src="{% static 'js/jquery.lazyload.min.js' %}"></script>
+    {% block header %}{% endblock %}
+</head>
+
+
+<body class="user-select">
+    <header class="header">
+  <nav class="navbar navbar-default" id="navbar">
+    <div class="container">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#header-navbar" aria-expanded="false">
+            <span class="sr-only"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <h1 class="logo hvr-bounce-in" style="margin-top: 5px"><a href="{% url 'blog:post_list' %}" title="">我的博客</a></h1>
+      </div>
+      <div class="collapse navbar-collapse" id="header-navbar">
+        <ul class="nav navbar-nav navbar-right">
+          <li class="hidden-index active"><a data-cont="博客首页" href="{% url 'blog:post_list' %}">博客首页</a></li>
+            <li><a href="{% url 'blog:tag_list' %}">标签云</a></li>
+          <li><a href="{% url 'blog:readers' %}" rel="nofollow">读者墙</a></li>
+          <li><a href="{% url 'blog:links' %}" rel="nofollow">友情链接</a></li>
+
+            <li class="dropdown">
+              <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" rel="nofollow">关注本站 <span class="caret"></span></a>
+            <ul class="dropdown-menu header-topbar-dropdown-menu">
+              <li><a data-toggle="modal" data-target="#WeChat" rel="nofollow"><i class="fa fa-weixin"></i> 微信</a></li>
+              <li><a href="#" rel="nofollow"><i class="fa fa-weibo"></i> 微博</a></li>
+              <li><a data-toggle="modal" data-target="#areDeveloping" rel="nofollow"><i class="fa fa-rss"></i> RSS</a></li>
+            </ul>
+          </li>
+        </ul>
+          <div class="header-topbar hidden-xs link-border">
+              <div class="auth-box">
+                <i class="icon-person iconfont"></i>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'myaccount:profile' %}" class="authenticated-box">{{ user.username }}</a>
+                    <div class="user-more-box">
+                        <i class="triangle"></i>
+                        {% if user.is_staff %}
+                            <a href="http://127.0.0.1:8000/admin/">管理系统</a>
+{#                            <a href="{% url 'contrib_admin' %}">管理系统</a>#}
+                        {% endif %}
+                            <a href="{% url 'account_logout' %}">退出登录</a>
+                    </div>
+                {% else %}
+                    <a href="{% url 'account_login' %}"  class="login" rel="nofollow">登录</a>/
+                    <a href="{% url 'account_signup' %}" class="register" rel="nofollow">注册</a>
+                {% endif %}
+              </div>
+
+      </div>
+    </div>
+  </nav>
+</header>
+    <section class="container">
+        <div class="content-wrap">{% block content-wrap %}{% endblock %}</div>
+        {% block sidebar %}{% endblock %}
+    </section>
+
+    <footer class="footer">
+      <div class="container">
+        <p>&copy; 2016 <a href="">ylsat.com</a> &nbsp; <a href="#" target="_blank" rel="nofollow">豫ICP备20151109-1</a>
+            <a href="http://www.mycodes.net/" target="_blank">源码之家</a></p>
+      </div>
+      <div id="gotop"><a class="gotop"></a></div>
+    </footer>
+    <!--微信二维码模态框-->
+    <div class="modal fade user-select" id="WeChat" tabindex="-1" role="dialog" aria-labelledby="WeChatModalLabel">
+      <div class="modal-dialog" role="document" style="margin-top:120px;max-width:280px;">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="WeChatModalLabel" style="cursor:default;">微信扫一扫</h4>
+          </div>
+          <div class="modal-body" style="text-align:center"> <img src="{% static 'images/weixin.jpg' %}" alt="" style="cursor:pointer"/> </div>
+        </div>
+      </div>
+    </div>
+
+    <!--该功能正在日以继夜的开发中-->
+    <div class="modal fade user-select" id="areDeveloping" tabindex="-1" role="dialog" aria-labelledby="areDevelopingModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="areDevelopingModalLabel" style="cursor:default;">该功能正在日以继夜的开发中…</h4>
+          </div>
+          <div class="modal-body"> <img src="{% static 'images/baoman/baoman_01.gif' %}" alt="深思熟虑" />
+            <p style="padding:15px 15px 15px 100px; position:absolute; top:15px; cursor:default;">很抱歉，程序猿正在日以继夜的开发此功能，本程序将会在以后的版本中持续完善！</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">朕已阅</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.ias.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+</body>
+</html>

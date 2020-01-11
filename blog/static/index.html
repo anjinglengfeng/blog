@@ -1,0 +1,125 @@
+{% extends "blog/static/base.html" %}
+{% load blog_tags %}
+{% load static %}
+
+
+{% block title %}我的博客{% endblock %}
+
+
+{% block content-wrap %}
+    <div class="content">
+          <div id="focusslide" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+              <li data-target="#focusslide" data-slide-to="0" class="active"></li>
+              <li data-target="#focusslide" data-slide-to="1"></li>
+              <li data-target="#focusslide" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+              <div class="item active"> <a href="" target="_blank">
+                  <img src="{% static 'images/banner/banner_01.jpg' %}" alt="" class="img-responsive"></a>
+                <!--<div class="carousel-caption"> </div>-->
+              </div>
+              <div class="item"> <a href="" target="_blank">
+                  <img src="{% static 'images/banner/banner_02.jpg' %}" alt="" class="img-responsive"></a>
+                <!--<div class="carousel-caption"> </div>-->
+              </div>
+              <div class="item"> <a href="" target="_blank">
+                  <img src="{% static 'images/banner/banner_03.jpg' %}" alt="" class="img-responsive"></a>
+                <!--<div class="carousel-caption"> </div>-->
+              </div>
+            </div>
+            <a class="left carousel-control" href="#focusslide" role="button" data-slide="prev" rel="nofollow">
+                <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                <span class="sr-only">上一个</span>
+            </a>
+              <a class="right carousel-control" href="#focusslide" role="button" data-slide="next" rel="nofollow">
+                  <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                  <span class="sr-only">下一个</span>
+              </a>
+          </div>
+          <article class="excerpt-minic excerpt-minic-index">
+              <h2><span class="red">【今日推荐】</span><a href="{{ recommend_post.get_absolute_url }}" title="">{{ recommend_post.title }}</a></h2>
+            <div class="note">{{ recommend_post.body|markdown|truncatechars_html:300|striptags }}</div>
+            <div class="read-more cl-effect-14">
+                <a href="{{ recommend_post.get_absolute_url }}" class="more-link">...继续阅读... <span class="meta-nav"></span></a>
+            </div>
+          </article>
+
+          <div class="title">
+            <h3>最新发布</h3>
+            <div class="more" style="float: left;">
+                {% for category in categories %}
+                    <a href="">{{ category.name }}</a>
+                {% endfor %}
+            </div>
+          </div>
+            <ul>
+                {% include 'blog/static/list.html' %}
+            </ul>
+
+          <nav class="pagination" style="display: none;">
+            <ul>
+              <li class="prev-page"></li>
+              <li class="active"><span>1</span></li>
+              <li><a href="?page=2">2</a></li>
+              <li class="next-page"><a href="?page=2">下一页</a></li>
+              <li><span>共 2 页</span></li>
+            </ul>
+          </nav>
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    <aside class="sidebar">
+        <div class="fixed">
+          <div class="widget widget-tabs">
+            <ul class="nav nav-tabs" role="tablist">
+              <li role="presentation" class="active">
+                  <a href="#notice" aria-controls="notice" role="tab" data-toggle="tab">网站公告</a>
+              </li>
+              <li role="presentation">
+                  <a href="#centre" aria-controls="centre" role="tab" data-toggle="tab">会员中心</a>
+              </li>
+              <li role="presentation">
+                  <a href="#contact" aria-controls="contact" role="tab" data-toggle="tab">联系站长</a>
+              </li>
+            </ul>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane notice active" id="notice">
+                <ul>
+                    {% for notice in notices %}
+                        <li>
+                            <time datetime="{{ notice.publish }}">{{ notice.publish|date:'m-d' }}</time>
+                            <a href="" target="_blank">{{ notice.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+              </div>
+              <div role="tabpanel" class="tab-pane centre" id="centre">
+                <h4>需要登录才能进入会员中心</h4>
+                <p> <a data-toggle="modal" data-target="#loginModal" class="btn btn-primary">立即登录</a>
+                    <a href="javascript:" class="btn btn-default">现在注册</a>
+                </p>
+              </div>
+              <div role="tabpanel" class="tab-pane contact" id="contact">
+                <h2>Email:<br />
+                  <a href="mailto:286447897@qq.com" data-toggle="tooltip" data-placement="bottom" title="286447897@qq.com">286447897@qq.com</a>
+                </h2>
+              </div>
+            </div>
+          </div>
+          <div class="widget widget_search">
+            <form class="navbar-form" action="{% url 'blog:search' %}" method="post">
+              <div class="input-group">
+                <input type="text" name="q" class="form-control" size="35" placeholder="请输入关键字" maxlength="15" autocomplete="off">
+                <span class="input-group-btn">
+                <button class="btn btn-default btn-search" name="search" type="submit">搜索</button>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+       {% include 'blog/static/widget_hot.html' %}
+      </aside>
+{% endblock %}
+

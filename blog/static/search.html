@@ -1,0 +1,31 @@
+{% extends "blog/static/base.html" %}
+{% load blog_tags %}
+{% load static %}
+
+
+{% block title %}搜索页面{% endblock %}
+
+
+{% block content-wrap %}
+    <div class="content">
+        <div class="widget widget_search">
+            <form class="navbar-form" method="post" action="{% url 'blog:search' %}">
+                {% csrf_token %}
+                <div class="input-group">
+                    <input type="text" name="q" size="100" class="form-control" placeholder="请输入关键字" maxlength="15" autocomplete="off">
+                    <span class="input-group-btn">
+                    <button class="btn btn-default btn-search" name="search" type="submit">搜索</button>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div style="margin-bottom: 15px; margin-left: 15px;"><h3>{{ msg }}</h3></div>
+        {% include 'blog/static/list.html' %}
+    </div>
+{% endblock %}
+
+{% block sidebar %}
+    <aside class="sidebar">
+       {% include 'blog/static/widget_hot.html' %}
+      </aside>
+{% endblock %}

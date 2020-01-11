@@ -1,0 +1,22 @@
+{% extends "blog/static/base.html" %}
+{% load blog_tags %}
+{% load static %}
+
+
+
+
+{% block header %}
+
+{% endblock %}
+
+
+{% block content-wrap %}
+  <main>
+      <div class="container" style="margin: 50px 380px 380px; background-color: #ffffff; padding: 20px; box-shadow: 1px 1px 0 2px #eee;border-radius: 5px" >
+      {% block content %}
+      {% endblock %}
+    </div>
+  </main>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+{% endblock %}
