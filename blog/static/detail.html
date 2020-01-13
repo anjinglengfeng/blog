@@ -66,9 +66,11 @@
       </div>-->
        <div id="respond">
           {% if user.is_authenticated %}
+
           <form action="" method="post" id="comment-form">
+              {% csrf_token %}
           <div class="comment">
-            <div class="comment-title"><img class="avatar" src="{% static 'images/icon/icon.png' %}" alt="" /></div>
+            <div class="comment-title"><img class="avatar" src="{{ user.profile.user_img.url }}" alt="" /></div>
             <div class="comment-box">
               <textarea placeholder="您的评论可以一针见血" name="body" id="comment-textarea" cols="100%" rows="3" tabindex="1" ></textarea>
               <div class="comment-ctrl">
@@ -94,7 +96,7 @@
           <li class="comment-content">
               <span class="comment-f">{{ forloop.counter }}楼</span>
               <div class="comment-avatar">
-                  <img class="avatar" src="{% static 'images/icon/icon.png' %}" alt="" />
+                  <img class="avatar" src="{{ user.profile.user_img.url }}" alt="" />
               </div>
               <div class="comment-main">
                   <p><span class="address">{{ comment.name }}</span>

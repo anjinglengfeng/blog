@@ -67,8 +67,7 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,)]
-        ,
+        'DIRS': [os.path.join(BASE_DIR,)],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -132,7 +131,7 @@ USE_TZ = True
 # 基本设定
 ACCOUNT_AUTHENTICATION_METHOD = 'username_email'  # 登录模式可选 用户名和邮箱
 ACCOUNT_EMAIL_REQUIRED = True
-LOGIN_REDIRECT_URL = '/accounts/profile/' # 登录成功后重新定向的页面
+LOGIN_REDIRECT_URL = '/' # 登录成功后重新定向的页面
 
 ACCOUNT_SIGNUP_FORM_CLASS = 'myaccount.forms.SignupForm'
 
@@ -181,3 +180,7 @@ DEFAULT_FROM_EMAIL = '286447897@qq.com'
 # FVhNDcq4TRM56BIcIHEXjUnb
 # Secret Key：
 # D25AiP25389iFEIge13zcRgCYTPp7dzp
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media').replace('\\', '/')     #设置静态文件路径为主目录下的media文件夹
+MEDIA_URL = '/media/'

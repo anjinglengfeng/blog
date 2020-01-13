@@ -7,6 +7,7 @@ class ProfileForm(forms.Form):
     last_name = forms.CharField(label='名', max_length=50, required=False)
     org = forms.CharField(label='组织', max_length=50, required=False)
     telephone = forms.CharField(label='电话', max_length=50, required=False)
+    user_img = forms.ImageField(label='头像', max_length=100, required=False)
 
 
 class SignupForm(forms.Form):

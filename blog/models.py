@@ -23,6 +23,7 @@ class Category(models.Model):
 
 
 class Post(models.Model):
+    post_img = models.ImageField(upload_to='post_img', blank=True,)
     title = models.CharField('标题', max_length=250)
     # slug = models.SlugField(editable=False)
     slug = models.SlugField('唯一标识',max_length=250, unique_for_date='publish')

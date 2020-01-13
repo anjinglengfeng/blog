@@ -1,17 +1,23 @@
-{% extends "account/base.html" %}
+
+{% extends "blog/static/base.html" %}
+{% load blog_tags %}
+{% load static %}
 {% load i18n %}
 
-{% block title %}个人详情{% endblock %}
 
+{% block title %}个人资料更新{% endblock %}
 
-{% block content %}
-{% if user.is_authenticated %}
-<a href="{% url 'myaccount:profile_update' %}">更新资料</a> | <a href="{% url 'account_email' %}">邮箱验证</a>  | <a href="{% url 'account_change_password' %}">修改密码</a> |
-<a href="{% url 'account_logout' %}">退出登录</a>
-{% endif %}
-<h2>更新我的资料</h2>
+{% block content-wrap %}
+<section class="container container-page">
 
-<div class="form-wrapper">
+  {% include 'account/pageside.html' %}
+
+  <div class="content">
+    <header class="article-header">
+      <h1 class="article-title">我的个人资料</h1>
+    </header>
+
+      <div class="form-wrapper">
    <form method="post" action="" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in form %}
@@ -31,4 +37,8 @@
 </div>
 
 
+  </div>
+</section>
 {% endblock %}
+
+

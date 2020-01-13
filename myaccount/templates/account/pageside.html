@@ -1,0 +1,16 @@
+  <div class="pageside">
+    <div class="pagemenus">
+        <div>个人信息</div>
+             <ul class="pagemenu">
+                <li><a href="{% url 'myaccount:profile_update' %}">更新资料</a></li>
+                <li><a href="{% url 'account_email' %}">邮箱验证</a></li>
+                <li><a href="{% url 'account_change_password' %}">修改密码</a></li>
+             </ul>
+       <div>个人记录</div>
+            <ul class="pagemenu">
+                <li><a href="{% url 'myaccount:profile_update' %}">发表过的文章</a></li>
+                <li><a href="{% url 'account_email' %}">浏览文章记录</a></li>
+                <li><a href="{% url 'account_change_password' %}">评论过的文章</a></li>
+            </ul>
+    </div>
+  </div>

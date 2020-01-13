@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import Post, Comment, Category
 from notice.models import Notice
@@ -146,9 +147,10 @@ class AddCommentView(View):
             return HttpResponse('{"status": "fail"}', content_type='application/json')
 
 
+@csrf_exempt
 def add_post(request):
     if request.method == 'POST':
-        add_post_form = PostForm(request.POST)
+        add_post_form = PostForm(request.POST, request.FILES)
         title = request.POST.get('title')
         slug = slugify(title)
         is_exsit = Post.objects.filter(slug=slug,created__date=datetime.now().date())
@@ -170,13 +172,24 @@ def add_post(request):
 def update_post(request, id):
     post = Post.objects.get(id=id)
     if request.method == 'POST':
-        update_post_form = PostForm(request.POST)
+        update_post_form = PostForm(request.POST, request.FILES)
         if update_post_form.is_valid():
-            post.title = request.POST['title']
-            post.body = request.POST['body']
-            post.category = request.POST['category']
-            post.tags = request.POST['tags']
-            post.status = request.POST['status']
+            # post.title = request.POST['title']
+            # post.body = request.POST['body']
+            # post.category = request.POST['category']
+            # post.tags = request.POST['tags']
+            # post.status = request.POST['status']
+            # post.post_img = request.POST['post_img']
+
+            post.title = update_post_form.cleaned_data['title']
+            post.body = update_post_form.cleaned_data['body']
+            post.category = update_post_form.cleaned_data['category']
+            post.tags = update_post_form.cleaned_data['tags']
+            post.status = update_post_form.cleaned_data['status']
+            post.post_img = update_post_form.cleaned_data['post_img']
+
+
+
             post.save()
             return HttpResponse('文章更新成功')
         else:
