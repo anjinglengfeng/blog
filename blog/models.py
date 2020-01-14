@@ -29,7 +29,7 @@ class Post(models.Model):
     slug = models.SlugField('唯一标识',max_length=250, unique_for_date='publish')
     author = models.ForeignKey(User, verbose_name='作者', on_delete=models.CASCADE, related_name='blog_posts')
     body = models.TextField()
-    publish = models.DateTimeField('发表时间', default=timezone.now())
+    publish = models.DateTimeField('发表时间', default=timezone.now)
     created = models.DateTimeField('创建时间', auto_now_add=True)
     updated = models.DateTimeField('更新时间', auto_now=True)
     STATUS_CHOICES = (('published', '发布'),('draft', '不发布'), )
