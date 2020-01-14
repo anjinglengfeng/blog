@@ -125,9 +125,21 @@
               <li><span>共 2 页</span></li>
             </ul>
           </nav>
-
       </div>
     </div>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery.ias.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
+    <script src="{% static 'js/jquery.qqFace.js' %}"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('.emotion').qqFace({
+                id : 'facebox',
+                assign:'comment-textarea',
+                path:'{% static 'images/arclist/' %}'	//表情存放的路径
+            });
+         });
+    </script>
 {% endblock %}
 
 
