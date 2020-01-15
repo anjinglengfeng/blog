@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
 
 from .models import Post, Comment, Category
 from notice.models import Notice
@@ -72,6 +73,7 @@ def post_list(request, tag_slug=None, category_slug=None):
     return render(request, 'blog/static/index.html',{'page': page, 'posts': posts, 'tag':tag,"categories":categories, 'notices':notices, 'recommend_post':recommend_post})
 
 
+
 def post_detail(request,year, month, day, post):
     post = get_object_or_404(Post,slug=post,
                              status='published',
@@ -107,7 +109,7 @@ def post_detail(request,year, month, day, post):
     return render(request, 'blog/static/detail.html', context)
 
 
-# @register.inclusion_tag('blog/static/tags.html', takes_context=True)
+
 def tag_list(request):
     # tag_list = Tag.objects.all()
     # return render(request, 'blog/static/tags.html',{'tag_list':tag_list,})

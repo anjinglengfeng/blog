@@ -3,7 +3,7 @@
     $.fn.qqFace = function (options) {
         var defaults = {
             id: 'facebox',
-            path: 'face/',
+            path: '../static/images/face/',
             assign: 'content',
             tip: 'em_'
         };
