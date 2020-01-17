@@ -67,7 +67,7 @@
        <div id="respond">
           {% if user.is_authenticated %}
 
-          <form action="" method="post" id="comment-form">
+          <form action="{{post.get_absolute_url}}" method="post" id="comment-form">
               {% csrf_token %}
           <div class="comment">
             <div class="comment-title"><img class="avatar" src="{{ user.profile.user_img.url }}" alt="" /></div>
@@ -79,9 +79,7 @@
                     <i class="fa fa-spin fa-circle-o-notch"></i>
                     <span class="comment-prompt-text"></span>
                 </div>
-                <input type="hidden" name="name" value="{{ user.id }}" class="articleid" id="name" />
-                <input type="hidden" name="post" value="{{ post.id }}" class="articleid" id="post"/>
-                <button type="submit" id="comment-submit">评论</button>
+                <button type="button" id="comment-submit">评论</button>
               </div>
             </div>
           </div>
@@ -99,39 +97,40 @@
                   <img class="avatar" src="{{ user.profile.user_img.url }}" alt="" />
               </div>
               <div class="comment-main">
-                  <p><span class="address">{{ comment.name }}</span>
+                  <p>
+                      <span class="address">{{ comment.name }}</span>
                       <span class="time">({{ comment.created }})</span>
                       <br />
-                    <div id="commentbody">
-                  {{ comment.body|linebreaks }}
-              </div></p>
+                        <div id="commentbody">
+                        {{ comment.body|linebreaks }}
+                        </div>
+                  </p>
               </div>
           </li>
         </ol>
         {% empty %}<p>还没有评论</p>
         {% endfor %}
-{#        <div class="quotes">#}
-{#            <span class="disabled">首页</span>#}
-{#            <span class="disabled">上一页</span>#}
-{#            <a class="current">1</a>#}
-{#            <a href="">2</a>#}
-{#            <span class="disabled">下一页</span>#}
-{#            <span class="disabled">尾页</span>#}
-{#        </div>#}
-          <nav class="pagination" style="display: none;">
-            <ul>
-              <li class="prev-page"></li>
-              <li class="active"><span>1</span></li>
-              <li><a href="?page=2">2</a></li>
-              <li class="next-page"><a href="?page=2">下一页</a></li>
-              <li><span>共 2 页</span></li>
-            </ul>
-          </nav>
+        <div class="quotes">
+            <span class="disabled">首页</span>
+            <span class="disabled">上一页</span>
+            <a class="current">1</a>
+            <a href="">2</a>
+            <span class="disabled">下一页</span>
+            <span class="disabled">尾页</span>
+        </div>
+{#          <nav class="pagination" style="display: none;">#}
+{#            <ul>#}
+{#              <li class="prev-page"></li>#}
+{#              <li class="active"><span>1</span></li>#}
+{#              <li><a href="?page=2">2</a></li>#}
+{#              <li class="next-page"><a href="?page=2">下一页</a></li>#}
+{#              <li><span>共 2 页</span></li>#}
+{#            </ul>#}
+{#          </nav>#}
       </div>
     </div>
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.ias.js' %}"></script>
-    <script src="{% static 'js/scripts.js' %}"></script>
     <script src="{% static 'js/jquery.qqFace.js' %}"></script>
     <script type="text/javascript">
         $(function(){

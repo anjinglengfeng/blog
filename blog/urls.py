@@ -1,7 +1,6 @@
 from django.urls import path
 from . import views
 from .feeds import LastestPostFeed
-from blog.views import AddCommentView
 
 
 app_name = 'blog'

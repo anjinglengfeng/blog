@@ -160,13 +160,12 @@ $(window).scroll(function () {
 $(function(){
 	$("#comment-submit").click(function(){
 		var commentContent = $("#comment-textarea");
-		var commentuser = $("#name");
-		var commentpost = $("#post");
-
+		var $formData = new FormData();
+		$formData.append("body",commentContent.val());
 		var commentButton = $("#comment-submit");
 		var promptBox = $('.comment-prompt');
 		var promptText = $('.comment-prompt-text');
-		// var articleid = $('.articleid').val();
+
 		promptBox.fadeIn(400);
 		if(commentContent.val() === ''){
 			promptText.text('请留下您的评论');
@@ -177,37 +176,26 @@ $(function(){
 		promptText.text('正在提交...');
 		$.ajax({
 			type:"POST",
-			url:".",
-			// data:"commentContent=" + replace_em(commentContent.val()),
-			data: {'name':commentuser, 'post':commentpost, 'body':commentContent},
-			// data: commentContent,
+			// url:'',
+			url:$('#comment-form').attr('action'),
+			data: $formData,
+            contentType:false,
+            processData:false,
+            // headers:{"X-CSRFToken":$('[name="csrfmiddlewaretoken"]').val()},
 			cache:false, //不缓存此页面
 			success:function(data){
 				alert(data);
 				promptText.text('评论成功!');
 			    commentContent.val(null);
 				$(".commentlist").fadeIn(300);
-				/*$(".commentlist").append();*/
 				commentButton.attr('disabled',false);
 				commentButton.removeClass('disabled');
 			}
 		});
-		/*$(".commentlist").append(replace_em(commentContent.val()));*/
 		promptBox.fadeOut(100);
 		return false;
 	});
-}
-//对文章内容进行替换
-function replace_em(){
-    var str = $("#commentbody");
-	str = str.replace(/\</g,'&lt;');
-	str = str.replace(/\>/g,'&gt;');
-	str = str.replace(/\[em_([0-9]*)\]/g,'我是');
-	return str;
-}
-
-
-);
+});
 
 
 //对文章内容进行替换

@@ -8,7 +8,7 @@ from .models import Post, Comment, Category
 from notice.models import Notice
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
-from .forms import EmailPostForm, CommentForm, PostForm
+from .forms import EmailPostForm, PostForm
 from django.core.mail import send_mail
 from taggit.models import Tag
 from django.db.models import Count
@@ -73,7 +73,6 @@ def post_list(request, tag_slug=None, category_slug=None):
     return render(request, 'blog/static/index.html',{'page': page, 'posts': posts, 'tag':tag,"categories":categories, 'notices':notices, 'recommend_post':recommend_post})
 
 
-
 def post_detail(request,year, month, day, post):
     post = get_object_or_404(Post,slug=post,
                              status='published',
@@ -82,15 +81,15 @@ def post_detail(request,year, month, day, post):
                              publish__day=day)
     comments = post.comments.filter(active=True)
     new_comment = None
-    post.increase_views()
-    if request.method == "POST":
-        comment_form = CommentForm(data=request.POST)
-        if comment_form.is_valid():
-            new_comment = comment_form.save(commit=False)
-            new_comment.post = post
-            new_comment.save()
-    else:
-        comment_form = CommentForm()
+    post.increase_views()   # 浏览次数加1
+    # 判断是否是ajax提交数据
+    if request.is_ajax():
+        body = request.POST.get('body')
+        new_comment = Comment.objects.create(name=request.user, body=body, post=post)
+        new_comment.save()
+        return HttpResponse("评论成功")
+        # else:
+        #     return HttpResponse("还未登录")
     # paginator = Paginator(comments, 5)  # 每页显示5篇文章
     # page = request.GET.get('page')
     # try:
@@ -105,7 +104,7 @@ def post_detail(request,year, month, day, post):
     post_tags_ids = post.tags.values_list('id', flat=True)
     similar_tags = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
     similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags','-publish')[:4]
-    context = {'post': post, 'comments': comments, 'new_comment': new_comment, 'comment_form': comment_form, 'similar_posts': similar_posts, 'tags': tags}
+    context = {'post': post, 'comments': comments, 'similar_posts': similar_posts, 'tags': tags}
     return render(request, 'blog/static/detail.html', context)
 
 
@@ -139,14 +138,14 @@ def search(request):
     return render(request, 'blog/static/search.html', {'msg': msg, 'posts': posts})
 
 
-class AddCommentView(View):
-    def post(self, request):
-        comment_form = CommentForm(request.POST)
-        if comment_form.is_valid():
-            comment_form.save()
-            return HttpResponse('{"status": "success"}', content_type='application/json')
-        else:
-            return HttpResponse('{"status": "fail"}', content_type='application/json')
+# class AddCommentView(View):
+#     def post(self, request):
+#         comment_form = CommentForm(request.POST)
+#         if comment_form.is_valid():
+#             comment_form.save()
+#             return HttpResponse('{"status": "success"}', content_type='application/json')
+#         else:
+#             return HttpResponse('{"status": "fail"}', content_type='application/json')
 
 
 @csrf_exempt

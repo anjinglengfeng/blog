@@ -64,7 +64,7 @@
                         <ul class="dropdown-menu header-topbar-dropdown-menu">
                           <li><a href="{% url 'myaccount:profile' %}" rel="nofollow">个人详情</a></li>
                             {% if user.is_staff %}
-                            <li><a href="http://127.0.0.1:8000/admin/">管理系统</a></li>
+                            <li><a href="admin/">管理系统</a></li>
                           {% endif %}
                           <li><a href="{% url 'account_logout' %}" rel="nofollow">退出登录</a></li>
                         </ul>
@@ -73,7 +73,7 @@
 {#                    <div class="user-more-box">#}
 {#                        <i class="triangle"></i>#}
 {#                        {% if user.is_staff %}#}
-{#                            <a href="http://127.0.0.1:8000/admin/">管理系统</a>#}
+{#                            <a href="admin/">管理系统</a>#}
 {#                        {% endif %}#}
 {#                            <a href="{% url 'account_logout' %}">退出登录</a>#}
 {#                    </div>#}
