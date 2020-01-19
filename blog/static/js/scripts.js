@@ -160,8 +160,13 @@ $(window).scroll(function () {
 $(function(){
 	$("#comment-submit").click(function(){
 		var commentContent = $("#comment-textarea");
+		var name = $("#name").val();
+		var post = $("#post").val();
 		var $formData = new FormData();
 		$formData.append("body",commentContent.val());
+
+
+
 		var commentButton = $("#comment-submit");
 		var promptBox = $('.comment-prompt');
 		var promptText = $('.comment-prompt-text');
@@ -176,7 +181,6 @@ $(function(){
 		promptText.text('正在提交...');
 		$.ajax({
 			type:"POST",
-			// url:'',
 			url:$('#comment-form').attr('action'),
 			data: $formData,
             contentType:false,
@@ -184,18 +188,23 @@ $(function(){
             // headers:{"X-CSRFToken":$('[name="csrfmiddlewaretoken"]').val()},
 			cache:false, //不缓存此页面
 			success:function(data){
-				alert(data);
+                // location.reload();
+			    alert(data);
 				promptText.text('评论成功!');
 			    commentContent.val(null);
-				$(".commentlist").fadeIn(300);
+			    var a = $(".commentlist");
+			    a.html(ffff);
+                    a.fadeIn(300);
 				commentButton.attr('disabled',false);
 				commentButton.removeClass('disabled');
+
 			}
 		});
 		promptBox.fadeOut(100);
 		return false;
 	});
 });
+
 
 
 //对文章内容进行替换

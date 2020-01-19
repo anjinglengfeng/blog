@@ -79,6 +79,8 @@
                     <i class="fa fa-spin fa-circle-o-notch"></i>
                     <span class="comment-prompt-text"></span>
                 </div>
+{#                  <input type="hidden" name="name" value="{{ user.id }}" class="articleid" id="name" />#}
+{#                  <input type="hidden" name="post" value="{{ post.id }}" class="articleid" id="post" />#}
                 <button type="button" id="comment-submit">评论</button>
               </div>
             </div>
@@ -88,36 +90,7 @@
             <p>未登录，登陆之后方可评论。</p>
           {% endif %}
       </div>
-      <div id="postcomments">
-        <ol class="commentlist">
-        {% for comment in comments %}
-          <li class="comment-content">
-              <span class="comment-f">{{ forloop.counter }}楼</span>
-              <div class="comment-avatar">
-                  <img class="avatar" src="{{ user.profile.user_img.url }}" alt="" />
-              </div>
-              <div class="comment-main">
-                  <p>
-                      <span class="address">{{ comment.name }}</span>
-                      <span class="time">({{ comment.created }})</span>
-                      <br />
-                        <div id="commentbody">
-                        {{ comment.body|linebreaks }}
-                        </div>
-                  </p>
-              </div>
-          </li>
-        </ol>
-        {% empty %}<p>还没有评论</p>
-        {% endfor %}
-        <div class="quotes">
-            <span class="disabled">首页</span>
-            <span class="disabled">上一页</span>
-            <a class="current">1</a>
-            <a href="">2</a>
-            <span class="disabled">下一页</span>
-            <span class="disabled">尾页</span>
-        </div>
+        {% include 'blog/static/comment_list.html' %}
 {#          <nav class="pagination" style="display: none;">#}
 {#            <ul>#}
 {#              <li class="prev-page"></li>#}

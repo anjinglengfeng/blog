@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
@@ -80,14 +80,13 @@ def post_detail(request,year, month, day, post):
                              publish__month=month,
                              publish__day=day)
     comments = post.comments.filter(active=True)
-    new_comment = None
     post.increase_views()   # 浏览次数加1
     # 判断是否是ajax提交数据
     if request.is_ajax():
         body = request.POST.get('body')
         new_comment = Comment.objects.create(name=request.user, body=body, post=post)
         new_comment.save()
-        return HttpResponse("评论成功")
+        return HttpResponse('评论成功')
         # else:
         #     return HttpResponse("还未登录")
     # paginator = Paginator(comments, 5)  # 每页显示5篇文章
@@ -106,7 +105,6 @@ def post_detail(request,year, month, day, post):
     similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags','-publish')[:4]
     context = {'post': post, 'comments': comments, 'similar_posts': similar_posts, 'tags': tags}
     return render(request, 'blog/static/detail.html', context)
-
 
 
 def tag_list(request):
@@ -205,3 +203,7 @@ def update_post(request, id):
         context = {'post': post, 'update_post_form': update_post_form, 'categories': categories, 'tags': tags, 'str_tags': str_tags}
         return render(request, 'blog/static/update_post.html', context)
 
+
+def get_comments(request, post_id):
+    comments = Comment.objects.filter(active=True, post_id=post_id)
+    return render(request, 'blog/static/comment_list.html', comments)
