@@ -188,13 +188,11 @@ $(function(){
             // headers:{"X-CSRFToken":$('[name="csrfmiddlewaretoken"]').val()},
 			cache:false, //不缓存此页面
 			success:function(data){
-                // location.reload();
+                location.reload();
 			    alert(data);
 				promptText.text('评论成功!');
 			    commentContent.val(null);
-			    var a = $(".commentlist");
-			    a.html(ffff);
-                    a.fadeIn(300);
+			    $(".commentlist").fadeIn(300);
 				commentButton.attr('disabled',false);
 				commentButton.removeClass('disabled');
 
