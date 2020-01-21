@@ -54,14 +54,16 @@ def post_list(request, tag_slug=None, category_slug=None):
     if category_slug:
         category = get_object_or_404(Tag, slug=category_slug)
         object_list = object_list.filter(category__in=[category])
-    paginator = Paginator(object_list, 5) # 每页显示5篇文章
-    page = request.GET.get('page')
     categories = Category.objects.all()
+    # 获取推荐文章
     recommend_post_list = object_list.filter(is_recommend=1)
     if recommend_post_list:
         recommend_post = recommend_post_list[0]
     else:
         recommend_post = []
+
+    paginator = Paginator(object_list, 3)  # 每页显示5篇文章
+    page = request.GET.get('page', 1)  # 获取当前页的页码，默认为第一页
     try:
         posts = paginator.page(page)
     except PageNotAnInteger:

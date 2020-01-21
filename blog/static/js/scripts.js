@@ -123,12 +123,12 @@ jQuery.ias({
 	container : '.content',
 	item: '.excerpt',
 	pagination: '.pagination',
-	next: '.next-page a',
+	next: 'a.next',
 	trigger: '查看更多',
 	// loader: '<div class="pagination-loading"><img src="../static/images/loading.gif" alt=""/></div>',
 	// loader: '<div class="pagination-loading"><img src="{% static "images/loading.gif" %}" alt=""/></div>',
 	loader: '<div class="pagination-loading">数据加载中</div>',
-	triggerPageThreshold: 5,
+	triggerPageThreshold: 3,
 	onRenderComplete: function() {
 		$('.excerpt .thumb').lazyload({
 			placeholder: '../static/images/occupying.png',
