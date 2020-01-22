@@ -204,8 +204,3 @@ def update_post(request, id):
             str_tags += (str(tag ) + ',')
         context = {'post': post, 'update_post_form': update_post_form, 'categories': categories, 'tags': tags, 'str_tags': str_tags}
         return render(request, 'blog/static/update_post.html', context)
-
-
-def get_comments(request, post_id):
-    comments = Comment.objects.filter(active=True, post_id=post_id)
-    return render(request, 'blog/static/comment_list.html', comments)

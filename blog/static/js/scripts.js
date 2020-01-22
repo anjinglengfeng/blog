@@ -207,9 +207,9 @@ $(function(){
 
 //对文章内容进行替换
 function replace_em(){
-    var str = $("#commentbody");
-	str = str.replace(/\</g,'&lt;');
-	str = str.replace(/\>/g,'&gt;');
-	str = str.replace(/\[em_([0-9]*)\]/g,'我是');
-	return str;
-}
+    var str = $("#commentlist");
+    str = str.replace(/\</g,'&lt;');
+    str = str.replace(/\>/g,'&gt;');
+    str = str.replace(/\[em_([0-9]*)\]/g,'我是');
+    return str;
+};
