@@ -1,0 +1,24 @@
+
+{% load blog_tags %}
+{% load static %}
+
+<div id="postcomments">
+<ol class="commentlist">
+{% for comment in comments %}
+  <li class="comment-content">
+      <span class="comment-f">{{ forloop.counter }}楼</span>
+      <div class="comment-avatar">
+          <img class="avatar" src="{{ user.profile.user_img.url }}" alt="" />
+      </div>
+      <div class="comment-main">
+          <p><span class="address">{{ comment.name }}</span>
+              <span class="time">({{ comment.created }})</span>
+              <br />
+            <div id="commentbody">
+          {{ comment.body|linebreaks }}
+      </div></p>
+      </div>
+  </li>
+</ol>
+{% empty %}<p>还没有评论</p>
+{% endfor %}

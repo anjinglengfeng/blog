@@ -1,0 +1,28 @@
+{% load static %}
+{% load blog_tags %}
+
+
+{% for post in posts %}
+    <li>
+        <article class="excerpt excerpt-1">
+          <a class="focus" href="" title="">
+              {% if post.post_img %}
+                  <img class="thumb" data-original="" src="{{ post.post_img.url }}" alt="图片">
+                  {% else %}
+                  <img class="thumb" data-original="" src="{% static 'images/excerpt.jpg' %}" alt="图片">
+              {% endif %}
+          </a>
+        <header><a class="cat" href="">{{ post.category }}<i></i></a>
+          <h2><a href="{{ post.get_absolute_url }}" title="">{{ post.title }}</a></h2>
+        </header>
+        <p class="meta">
+          <time class="time"><i class="glyphicon glyphicon-time"></i> {{ post.publish|date:'Y-m-d' }}</time>
+          <span class="views"><i class="glyphicon glyphicon-eye-open"></i>共{{ post.views }}次围观</span>
+            <a class="comment" href=""><i class="glyphicon glyphicon-comment"></i> {{ post.comments.count }}条评论</a></p>
+            <div class="note">{{ post.body|markdown|truncatechars_html:94|striptags }}</div>
+            <div class="read-more cl-effect-14">
+                <a href="{{ post.get_absolute_url }}" class="more-link">...继续阅读... <span class="meta-nav"></span></a>
+            </div>
+        </article>
+    </li>
+{% endfor %}
