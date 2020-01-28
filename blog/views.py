@@ -86,6 +86,7 @@ def post_detail(request,year, month, day, post):
     # 判断是否是ajax提交数据
     if request.is_ajax():
         body = request.POST.get('body')
+        print(body)
         new_comment = Comment.objects.create(name=request.user, body=body, post=post)
         new_comment.save()
         return HttpResponse('评论成功')

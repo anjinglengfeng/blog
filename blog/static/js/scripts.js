@@ -160,16 +160,12 @@ $(window).scroll(function () {
 $(function(){
 	$("#comment-submit").click(function(){
 		var commentContent = $("#comment-textarea");
-		var name = $("#name").val();
-		var post = $("#post").val();
-		var $formData = new FormData();
-		$formData.append("body",commentContent.val());
-
-
 
 		var commentButton = $("#comment-submit");
 		var promptBox = $('.comment-prompt');
 		var promptText = $('.comment-prompt-text');
+
+		var articleid = $('.articleid').val();
 
 		promptBox.fadeIn(400);
 		if(commentContent.val() === ''){
@@ -182,9 +178,9 @@ $(function(){
 		$.ajax({
 			type:"POST",
 			url:$('#comment-form').attr('action'),
-			data: $formData,
-            contentType:false,
-            processData:false,
+			data: "body=" + replace_em(commentContent.val()),
+            // contentType:false,
+            // processData:false,
             // headers:{"X-CSRFToken":$('[name="csrfmiddlewaretoken"]').val()},
 			cache:false, //不缓存此页面
 			success:function(data){
@@ -206,10 +202,10 @@ $(function(){
 
 
 //对文章内容进行替换
-function replace_em(){
-    var str = $("#commentlist");
+function replace_em(str){
     str = str.replace(/\</g,'&lt;');
     str = str.replace(/\>/g,'&gt;');
-    str = str.replace(/\[em_([0-9]*)\]/g,'我是');
+    str = str.replace(/\[em_([0-9]*)\]/g, '<img src="/static/images/arclist/$1.gif" border="0"/>');
+    // str = str.replace(/\[em_([0-9]*)\]/g, '<img src=\'{% static "images/arclist/$1.gif" %}\' border="0"/>');
     return str;
-};
+}

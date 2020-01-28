@@ -8,14 +8,16 @@
   <li class="comment-content">
       <span class="comment-f">{{ forloop.counter }}楼</span>
       <div class="comment-avatar">
-          <img class="avatar" src="{{ user.profile.user_img.url }}" alt="" />
+          <img class="avatar" src="{{ comment.name.profile.user_img.url }}" alt="头像" />
+
+{#          <img class="avatar" src="{{ user.profile.user_img.url }}" alt="" />#}
       </div>
       <div class="comment-main">
           <p><span class="address">{{ comment.name }}</span>
               <span class="time">({{ comment.created }})</span>
               <br />
             <div id="commentbody">
-          {{ comment.body|linebreaks }}
+          {{ comment.body|safe }}
       </div></p>
       </div>
   </li>
