@@ -1,0 +1,66 @@
+{% extends "blog/static/base.html" %}
+{% load blog_tags %}
+{% load static %}
+{% load i18n %}
+
+
+{% block title %}发表的文章{% endblock %}
+
+{% block content-wrap %}
+    <section class="container container-page">
+    {% include 'account/pageside.html' %}
+    <div class="content">
+        <header class="article-header">
+          <h1 class="article-title">我发表的文章</h1>
+        </header>
+        <ul>
+            {% for post in posts %}
+                <li style="padding: 20px; border-bottom: 1px solid #eee">
+                        <h4 style="left:0;"><a href="{{ post.get_absolute_url }}" style="color: #3a3a3a">·{{ post.title }}</a>
+                            <div style="float: right;">
+                                <button class="btn"><a href="{% url 'blog:update_post' post.id %}" style="color: #333">编辑</a></button>
+                                <button  href="javascript:" onclick="del_article(this, {{ post.id }})" class="btn">删除</button>
+                            </div>
+                            
+                        </h4>
+                </li>
+                 {% endfor %}
+            </ul>
+      </div>
+
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <!-- 引入layer.js -->
+    <script src="{% static 'layer/layer.js' %}"></script>
+
+    <script type="text/javascript">
+    function del_article(the, post_id){
+        layer.open({
+            type: 1,
+            skin: "layui-layer-rim",
+            area: ["400px", "200px"],
+            title: "删除文章",
+            content: '<div style="margin:20px 50px"><p>是否确定删除</p> </div>',
+            btn:['确定', '取消'], yes: function(){
+                $.ajax({
+                    url: '{% url "blog:delete_post" %}',
+                    type:"POST",
+                    data: {"post_id":post_id},
+                    success: function(e){
+                        if(e==="1"){
+                            parent.location.reload();
+                            layer.msg("删除成功");
+                        }else{
+                            layer.msg("删除失败");
+                        }
+                    },
+                })
+            },
+        });
+    }
+
+</script>
+    </section>
+{% endblock %}
+
+
+

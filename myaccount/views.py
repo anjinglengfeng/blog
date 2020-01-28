@@ -42,3 +42,9 @@ def profile_update(request):
         form = ProfileForm(default_data)
 
     return render(request, 'account/profile_update.html', {'form':form, 'user':user})
+
+
+def my_post(request):
+    user = request.user
+    posts = Post.objects.filter(author=user)
+    return render(request, 'account/my_post.html', {'posts': posts})

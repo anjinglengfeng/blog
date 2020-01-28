@@ -2206,3 +2206,10 @@ color:#FFF;
 	color: #A0A0A0;
 }
 
+.tags_title {
+    background-color: #D3D3D3;
+    height:50px;
+    margin: 1px;
+    text-align: center;
+    padding-top: 10px;
+}

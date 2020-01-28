@@ -1,8 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import View
 from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_GET
+from django.views.decorators.http import require_GET, require_POST
 
 from .models import Post, Comment, Category
 from notice.models import Notice
@@ -205,3 +206,16 @@ def update_post(request, id):
             str_tags += (str(tag ) + ',')
         context = {'post': post, 'update_post_form': update_post_form, 'categories': categories, 'tags': tags, 'str_tags': str_tags}
         return render(request, 'blog/static/update_post.html', context)
+
+
+@login_required(login_url='/account/login')
+@require_POST
+@csrf_exempt
+def delete_post(request):
+    post_id = request.POST['post_id']
+    try:
+        post = Post.objects.get(id=post_id)
+        post.delete()
+        return HttpResponse("1")
+    except:
+        return HttpResponse("2")
