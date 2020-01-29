@@ -14,7 +14,6 @@
         var tip = option.tip;
  
         if (assign.length <= 0) {
-            alert('缺少表情赋值对象。');
             return false;
         }
  

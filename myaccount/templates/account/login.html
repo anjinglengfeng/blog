@@ -12,11 +12,6 @@
 <form class="login" method="POST" action="{% url 'account_login' %}">
   {% csrf_token %}
 
-    {% for hidden in form.hidden_fields %}
-      {{ hidden }}
-    {% endfor %}
-
-
     <div class="form-group">
         <label for="inputDefault">账号</label>
         <input class="form-control" id="id_login" maxlength="30" name="login" placeholder="用户名或邮箱" type="text" />
@@ -31,6 +26,11 @@
         <label for="inputDefault"></label>
         <input id="id_remember" name="remember" type="checkbox" /> 记住我
     </div>
+
+        {% for error in field.errors %}
+          <span class="help-block">{{ error }}</span>
+        {% endfor %}
+
 
 <div style="float: right">
     <a class="button secondaryAction" href="{% url 'account_reset_password' %}">忘记密码</a>
