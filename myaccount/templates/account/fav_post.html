@@ -1,0 +1,29 @@
+{% extends "blog/static/base.html" %}
+{% load blog_tags %}
+{% load static %}
+{% load i18n %}
+
+
+{% block title %}收藏的文章{% endblock %}
+
+{% block content-wrap %}
+    <section class="container container-page">
+    {% include 'account/pageside.html' %}
+    <div class="content">
+        <header class="article-header">
+             <h1 class="article-title">我收藏的文章</h1>
+        </header>
+        <ul>
+            {% for post in posts %}
+                <li style="padding: 20px; border-bottom: 1px solid #eee">
+                        <h4 style="left:0;"><a href="{{ post.get_absolute_url }}" style="color: #3a3a3a">·{{ post.title }}</a>
+                        </h4>
+                </li>
+                 {% endfor %}
+            </ul>
+      </div>
+    </section>
+{% endblock %}
+
+
+

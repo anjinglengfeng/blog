@@ -12,26 +12,78 @@
     <div class="content" style="width:1000px; padding-left: 100px">
       <header class="article-header">
         <h1 class="article-title"><a href="">{{ post.title }}</a></h1>
-        <div class="article-meta"> <span class="item article-meta-time">
-          <time class="time" data-toggle="tooltip" data-placement="bottom" title="发布时间：{{ post.publish }}">
-              <i class="glyphicon glyphicon-time"></i>{{ post.publish }}</time>
-          </span>
-{#            <span class="item article-meta-source" data-toggle="tooltip" data-placement="bottom" title="来源：第一PHP社区">#}
-{#                <i class="glyphicon glyphicon-globe"></i> 第一PHP社区</span>#}
-            <span class="item article-meta-category" data-toggle="tooltip" data-placement="bottom" title="栏目：{{ post.category }}">
+          <p style="float:right;">
+                {% if has_fav %}
+                    <button id="add_fav_org_button" class="btn-round btn-light" style="background: #999; color: #fff; padding: 5px; font-size: 8px; border-radius: 7px">取消收藏</button>
+                {% else %}
+                    <button id="add_fav_org_button" class="btn-round btn-light" style="background: #3399CC; color: #fff; padding: 5px; font-size: 8px;border-radius: 7px">添加收藏</button>
+                {% endif %}
+            </p>
+        <div class="article-meta">
+            <span class="item article-meta-category" data-toggle="tooltip" data-placement="bottom" title="发布人：{{ post.author }}">
+                <i class="glyphicon glyphicon-user"></i> <a href="" title="">{{ post.author }}</a>
+            </span>
+            <span class="item article-meta-time">
+              <time class="time" data-toggle="tooltip" data-placement="bottom" title="发布时间：{{ post.publish }}">
+                  <i class="glyphicon glyphicon-time"></i>{{ post.publish }}</time>
+            </span>
+            <span class="item article-meta-category" data-toggle="tooltip" data-placement="bottom" title="分类：{{ post.category }}">
                 <i class="glyphicon glyphicon-list"></i> <a href="" title="">{{ post.category }}</a>
             </span>
-            <span class="item article-meta-views" data-toggle="tooltip" data-placement="bottom" title="查看：{{ post.views }}">
-                <i class="glyphicon glyphicon-eye-open"></i>共{{ post.views }}次围观</span>
-            <span class="item article-meta-comment" data-toggle="tooltip" data-placement="bottom" title="评论：0">
-                <i class="glyphicon glyphicon-comment"></i> {{ post.comments.count }}条评论</span> </div>
-          
-{#          {% if post.author.id == user.id %}#}
-{#                <div><a href="{% url 'blog:update_post' post.id %}">编辑文章</a></div>#}
-{#          {% endif %}#}
+            <span class="item article-meta-views" data-toggle="tooltip" data-placement="bottom" title="共{{ post.views }}次围观">
+                <i class="glyphicon glyphicon-eye-open"></i>浏览量：{{ post.views }}</span>
+            <span class="item article-meta-comment" data-toggle="tooltip" data-placement="bottom" title="共{{ post.comments.count }}条评论">
+                <i class="glyphicon glyphicon-comment"></i> 评论数：{{ post.comments.count }}</span>
+            <span class="item article-meta-comment" data-toggle="tooltip" data-placement="bottom" title="{{ post.fav_nums }}次收藏">
+                <i class="glyphicon glyphicon-star"></i> 收藏量：{{ post.fav_nums }}</span>
+
+
+
+            <script type="text/javascript">
+
+            //添加或取消收藏
+            function add_fav_org(current_elem, fav_id, fav_type){
+                $.ajax({
+                    cache: false,
+                    type: "POST",
+                    url:"{% url 'blog:add_fav' %}",
+                    data:{'fav_id':fav_id, 'fav_type':fav_type},
+                    async: true,
+                    beforeSend:function(xhr, settings){
+                        xhr.setRequestHeader("{{ csrf_token }}");
+                    },
+                    success: function(data) {
+                        if(data.fav_status === 'fail'){
+                            if(data.fav_msg === '用户未登录'){
+                                alert('请登录后再收藏');
+                                window.location.href="{% url 'account_login' %}";
+                            }else{
+                                alert(data.fav_msg)
+                            }
+
+                        }else if(data.fav_status === 'success'){
+                            current_elem.text(data.fav_msg);
+                            // 修改按钮的颜色
+                            if (data.fav_msg === '取消收藏') {
+                                document.getElementById('add_fav_org_button').style.background = '#999';
+                            } else if (data.fav_msg === '添加收藏') {
+                                document.getElementById('add_fav_org_button').style.background = '#3399CC';
+                            }
+                        }
+                    },
+                });
+            }
+
+            $('#add_fav_org_button').on('click', function(){
+                add_fav_org($(this), {{ post.id }}, 2);
+            });
+
+            </script>
+        </div>
       </header>
+
       <article class="article-content">
-        <p> {{ post.body|markdown }}</p>
+        <p>{{ post.body|markdown }}</p>
       </article>
       <div class="article-tags">标签：
           {% if tags %}
@@ -40,7 +92,7 @@
             {% endfor %}
           {% endif %}
       </div>
-
+</div>
       <div class="relates">
         <div class="title">
           <h3>相关推荐</h3>
@@ -90,6 +142,7 @@
             <p>未登录，登陆之后方可评论。</p>
           {% endif %}
       </div>
+    <div>
         {% include 'blog/static/comment_list.html' %}
 {#        <nav class="pagination" style="display: none;">#}
 {#            <div class="next-page">#}

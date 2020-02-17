@@ -134,5 +134,12 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.ias.js' %}"></script>
     <script src="{% static 'js/scripts.js' %}"></script>
+    {% if messages %}
+    <script>
+        {% for msg in messages %}
+            alert('{{ msg.message }}');
+        {% endfor %}
+    </script>
+{% endif %}
 </body>
 </html>

@@ -5,7 +5,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET, require_POST
 
-from .models import Post, Comment, Category
+from .models import Post, Comment, Category, UserFavorite
 from notice.models import Notice
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.views.generic import ListView
@@ -15,6 +15,9 @@ from taggit.models import Tag
 from django.db.models import Count
 from uuslug import slugify
 from datetime import datetime
+from django.contrib import messages
+
+from django.contrib.auth.models import User
 
 
 def post_share(request, post_id):
@@ -107,7 +110,12 @@ def post_detail(request,year, month, day, post):
     post_tags_ids = post.tags.values_list('id', flat=True)
     similar_tags = Post.published.filter(tags__in=post_tags_ids).exclude(id=post.id)
     similar_posts = similar_tags.annotate(same_tags=Count('tags')).order_by('-same_tags','-publish')[:4]
-    context = {'post': post, 'comments': comments, 'similar_posts': similar_posts, 'tags': tags}
+
+    has_fav = False
+    if request.user.is_authenticated:
+        if UserFavorite.objects.filter(user=request.user, fav_id=post.id, fav_type=2):
+            has_fav = True
+    context = {'post': post, 'comments': comments, 'similar_posts': similar_posts, 'tags': tags, 'has_fav':has_fav}
     return render(request, 'blog/static/detail.html', context)
 
 
@@ -150,6 +158,12 @@ def search(request):
 #             return HttpResponse('{"status": "fail"}', content_type='application/json')
 
 
+# @receiver(post_save)
+# def callback(sender, **kwargs):
+#     messages.success(sender, "文章发表成功")
+
+
+
 @csrf_exempt
 def add_post(request):
     if request.method == 'POST':
@@ -158,12 +172,13 @@ def add_post(request):
         slug = slugify(title)
         is_exsit = Post.objects.filter(slug=slug,created__date=datetime.now().date())
         if is_exsit:
-            return HttpResponse('今日已有重复标题的文章了')
+            return HttpResponse('今日已有重复标题的文章了,请返回修改')
         if add_post_form.is_valid():
             add_post_form.save()
-            return HttpResponse('文章发表成功')
+            messages.info(request, '文章发表成功')
+            return redirect('myaccount:my_post')
         else:
-            return HttpResponse('表单内容有误，请重新填写')
+            return HttpResponse('表单内容有误，请重新填写，请返回修改')
     else:
         add_post_form = PostForm()
         categories = Category.objects.all()
@@ -219,3 +234,40 @@ def delete_post(request):
         return HttpResponse("1")
     except:
         return HttpResponse("2")
+
+
+# 收藏的函数
+class AddFavView(View):
+    def post(self, request):
+        # 收藏都是记录他们的id，如果没取到把它设置未0，避免查询时异常
+        fav_id = request.POST.get('fav_id')
+        # 表明收藏的类别
+        fav_type = request.POST.get('fav_type')
+
+        # 收藏与已收藏取消收藏
+        # 判断用户是否登录:即使没登录会有一个匿名的user
+        if not request.user.is_authenticated:
+            # 未登录时返回json提示未登录，跳转到登录页面是在ajax中做的
+            return HttpResponse('{"fav_status":"fail", "fav_msg":"用户未登录"}', content_type='application/json')
+
+        exist_records = UserFavorite.objects.filter(user=request.user, fav_id=fav_id, fav_type=fav_type)
+
+        if exist_records:
+            # 如果已经存在，表明用户取消收藏
+            exist_records.delete()
+            # 模型中存储的收藏数减1
+            Post.objects.get(id=fav_id).change_fav_nums(add=-1)
+            return HttpResponse('{"fav_status":"success", "fav_msg":"添加收藏"}', content_type='application/json')
+        else:
+            user_fav = UserFavorite()
+            # 如果取到了id值才进行收藏
+            if int(fav_id) > 0 and int(fav_type) > 0:
+                user_fav.fav_id = fav_id
+                user_fav.fav_type = fav_type
+                user_fav.user = request.user
+                user_fav.save()
+                # 机构模型中存储的收藏数加1
+                Post.objects.get(id=fav_id).change_fav_nums(add=1)
+                return HttpResponse('{"fav_status":"success", "fav_msg":"取消收藏"}', content_type='application/json')
+            else:
+                return HttpResponse('{"fav_status":"fail", "fav_msg":"收藏出错"}', content_type='application/json')

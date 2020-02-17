@@ -3,7 +3,7 @@ from .models import UserProfile
 from .forms import ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
-from blog.models import Post
+from blog.models import Post, UserFavorite
 
 
 @login_required
@@ -47,4 +47,13 @@ def profile_update(request):
 def my_post(request):
     user = request.user
     posts = Post.objects.filter(author=user)
+    return render(request, 'account/my_post.html', {'posts': posts})
+
+
+def fav_post(request):
+    user = request.user
+    fav_id = UserFavorite.objects.filter(user=user).get('fav_id')
+    print(fav_id)
+    posts = Post.objects.filter(user=user, id=fav_id)
+    # fav_posts = UserFavorite.objects.filter(user=user)
     return render(request, 'account/my_post.html', {'posts': posts})

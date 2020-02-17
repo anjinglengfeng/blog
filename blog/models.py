@@ -40,6 +40,8 @@ class Post(models.Model):
     category = models.ForeignKey(Category, verbose_name='分类', on_delete=models.CASCADE)
     views = models.PositiveIntegerField(default=0, editable=False)
     is_recommend = models.BooleanField('是否今日推荐', default=False)
+    fav_nums = models.IntegerField(default=0, verbose_name='收藏数')
+    # fav_usr = models.ForeignKey(UserFavorite, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = '文章'
@@ -68,6 +70,10 @@ class Post(models.Model):
         self.slug = slugify(self.title)
         super(Post, self).save(*args, **kwargs)
 
+    def change_fav_nums(self, add=1):
+        self.fav_nums += add
+        self.save(update_fields=['fav_nums'])
+
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, verbose_name='文章', on_delete=models.CASCADE, related_name='comments')
@@ -86,3 +92,8 @@ class Comment(models.Model):
         return 'Comment by {} on {}'.format(self.name, self.post)
 
 
+class UserFavorite(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    fav_id = models.IntegerField(default=0)
+    # fav_id = models.ForeignKey(Post,on_delete=models.CASCADE)
+    fav_type = models.IntegerField(default=0)

@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from .feeds import LastestPostFeed
+from .views import AddFavView
 
 
 app_name = 'blog'
@@ -19,4 +20,5 @@ urlpatterns = [
     path('add_post/', views.add_post, name='add_post'),
     path('update_post/<int:id>/', views.update_post, name='update_post'),
     path('delete_post/', views.delete_post, name='delete_post'),
+    path('add_fav/', AddFavView.as_view(), name="add_fav"),  # 添加机构收藏
 ]
