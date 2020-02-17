@@ -11,17 +11,21 @@
     {% include 'account/pageside.html' %}
     <div class="content">
         <header class="article-header">
-          <h1 class="article-title">我发表的文章</h1>
+
+            <div style="float: right;">
+{#                <button class="btn btn btn-default btn-search" href="{% url 'blog:add_post' %}">添加新文章</button>#}
+                <a href="{% url 'blog:add_post' %}"><button class="btn btn-search">添加新文章</button></a>
+            </div>
+             <h1 class="article-title">我发表的文章</h1>
         </header>
         <ul>
             {% for post in posts %}
                 <li style="padding: 20px; border-bottom: 1px solid #eee">
                         <h4 style="left:0;"><a href="{{ post.get_absolute_url }}" style="color: #3a3a3a">·{{ post.title }}</a>
-                            <div style="float: right;">
-                                <button class="btn"><a href="{% url 'blog:update_post' post.id %}" style="color: #333">编辑</a></button>
-                                <button  href="javascript:" onclick="del_article(this, {{ post.id }})" class="btn">删除</button>
-                            </div>
-                            
+                            <span style="float: right;">
+                                <a href="{% url 'blog:update_post' post.id %}"><button class="btn btn-search">编辑</button></a>
+                                <button class="btn btn-search" onclick="del_article(this, {{ post.id }})" >删除</button>
+                            </span>
                         </h4>
                 </li>
                  {% endfor %}

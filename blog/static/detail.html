@@ -26,9 +26,9 @@
             <span class="item article-meta-comment" data-toggle="tooltip" data-placement="bottom" title="评论：0">
                 <i class="glyphicon glyphicon-comment"></i> {{ post.comments.count }}条评论</span> </div>
           
-          {% if post.author.id == user.id %}
-                <div><a href="{% url 'blog:update_post' post.id %}">编辑文章</a></div>
-          {% endif %}
+{#          {% if post.author.id == user.id %}#}
+{#                <div><a href="{% url 'blog:update_post' post.id %}">编辑文章</a></div>#}
+{#          {% endif %}#}
       </header>
       <article class="article-content">
         <p> {{ post.body|markdown }}</p>

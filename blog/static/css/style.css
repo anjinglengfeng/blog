@@ -1342,7 +1342,7 @@ color:#FFF;
 	-moz-box-shadow: none;
 }
 .btn-search {
-	border-radius: 0px;
+	border-radius: 5px;
 	background: #3399CC;
 	color: #FFF;
 	border: #3399CC solid 1px;
