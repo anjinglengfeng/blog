@@ -113,7 +113,7 @@ def post_detail(request,year, month, day, post):
 
     has_fav = False
     if request.user.is_authenticated:
-        if UserFavorite.objects.filter(user=request.user, fav_id=post.id, fav_type=2):
+        if UserFavorite.objects.filter(user=request.user, post=post.id, fav_type=2):
             has_fav = True
     context = {'post': post, 'comments': comments, 'similar_posts': similar_posts, 'tags': tags, 'has_fav':has_fav}
     return render(request, 'blog/static/detail.html', context)
@@ -240,9 +240,9 @@ def delete_post(request):
 class AddFavView(View):
     def post(self, request):
         # 收藏都是记录他们的id，如果没取到把它设置未0，避免查询时异常
-        fav_id = request.POST.get('fav_id')
+        post_id = request.POST.get('post_id', 0)
         # 表明收藏的类别
-        fav_type = request.POST.get('fav_type')
+        fav_type = request.POST.get('fav_type', 0)
 
         # 收藏与已收藏取消收藏
         # 判断用户是否登录:即使没登录会有一个匿名的user
@@ -250,24 +250,24 @@ class AddFavView(View):
             # 未登录时返回json提示未登录，跳转到登录页面是在ajax中做的
             return HttpResponse('{"fav_status":"fail", "fav_msg":"用户未登录"}', content_type='application/json')
 
-        exist_records = UserFavorite.objects.filter(user=request.user, fav_id=fav_id, fav_type=fav_type)
+        exist_records = UserFavorite.objects.filter(user=request.user, post=post_id, fav_type=fav_type)
 
         if exist_records:
             # 如果已经存在，表明用户取消收藏
             exist_records.delete()
             # 模型中存储的收藏数减1
-            Post.objects.get(id=fav_id).change_fav_nums(add=-1)
+            Post.objects.get(id=post_id).change_fav_nums(add=-1)
             return HttpResponse('{"fav_status":"success", "fav_msg":"添加收藏"}', content_type='application/json')
         else:
             user_fav = UserFavorite()
             # 如果取到了id值才进行收藏
-            if int(fav_id) > 0 and int(fav_type) > 0:
-                user_fav.fav_id = fav_id
+            if int(post_id) > 0 and int(fav_type) > 0:
+                user_fav.post_id = post_id
                 user_fav.fav_type = fav_type
                 user_fav.user = request.user
                 user_fav.save()
                 # 机构模型中存储的收藏数加1
-                Post.objects.get(id=fav_id).change_fav_nums(add=1)
+                Post.objects.get(id=post_id).change_fav_nums(add=1)
                 return HttpResponse('{"fav_status":"success", "fav_msg":"取消收藏"}', content_type='application/json')
             else:
                 return HttpResponse('{"fav_status":"fail", "fav_msg":"收藏出错"}', content_type='application/json')

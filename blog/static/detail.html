@@ -20,7 +20,7 @@
                 {% endif %}
             </p>
         <div class="article-meta">
-            <span class="item article-meta-category" data-toggle="tooltip" data-placement="bottom" title="发布人：{{ post.author }}">
+            <span class="item article-meta-author" data-toggle="tooltip" data-placement="bottom" title="发布人：{{ post.author }}">
                 <i class="glyphicon glyphicon-user"></i> <a href="" title="">{{ post.author }}</a>
             </span>
             <span class="item article-meta-time">
@@ -34,20 +34,23 @@
                 <i class="glyphicon glyphicon-eye-open"></i>浏览量：{{ post.views }}</span>
             <span class="item article-meta-comment" data-toggle="tooltip" data-placement="bottom" title="共{{ post.comments.count }}条评论">
                 <i class="glyphicon glyphicon-comment"></i> 评论数：{{ post.comments.count }}</span>
-            <span class="item article-meta-comment" data-toggle="tooltip" data-placement="bottom" title="{{ post.fav_nums }}次收藏">
-                <i class="glyphicon glyphicon-star"></i> 收藏量：{{ post.fav_nums }}</span>
+            <span class="item article-meta-star" id="star" data-toggle="tooltip" data-placement="bottom">
+                <i class="glyphicon glyphicon-star"></i> 收藏量：<span id="star-num">{{ post.fav_nums }}</span></span>
 
 
 
             <script type="text/javascript">
 
             //添加或取消收藏
-            function add_fav_org(current_elem, fav_id, fav_type){
+            function add_fav_org(current_elem, post_id, fav_type){
+                var star_str = $('#star-num').text();
+                var star_int = parseInt(star_str)
+                console.log(star);
                 $.ajax({
                     cache: false,
                     type: "POST",
                     url:"{% url 'blog:add_fav' %}",
-                    data:{'fav_id':fav_id, 'fav_type':fav_type},
+                    data:{'post_id':post_id, 'fav_type':fav_type},
                     async: true,
                     beforeSend:function(xhr, settings){
                         xhr.setRequestHeader("{{ csrf_token }}");
@@ -66,8 +69,11 @@
                             // 修改按钮的颜色
                             if (data.fav_msg === '取消收藏') {
                                 document.getElementById('add_fav_org_button').style.background = '#999';
+
+                                document.getElementById('star').innerHTML = "<i class=\"glyphicon glyphicon-star\"></i> 收藏量：<span id=\"star-num\">" + (star_int+1) + "</span>"
                             } else if (data.fav_msg === '添加收藏') {
                                 document.getElementById('add_fav_org_button').style.background = '#3399CC';
+                                document.getElementById('star').innerHTML = "<i class=\"glyphicon glyphicon-star\"></i> 收藏量：<span id=\"star-num\">" + (star_int-1)+"</span>"
                             }
                         }
                     },

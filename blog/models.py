@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from taggit.managers import TaggableManager
 from uuslug import slugify
+# from myaccount.models import UserProfile
 
 
 class PublishedManager(models.Manager):
@@ -41,7 +42,7 @@ class Post(models.Model):
     views = models.PositiveIntegerField(default=0, editable=False)
     is_recommend = models.BooleanField('是否今日推荐', default=False)
     fav_nums = models.IntegerField(default=0, verbose_name='收藏数')
-    # fav_usr = models.ForeignKey(UserFavorite, on_delete=models.CASCADE)
+    user = models.ManyToManyField(User,through="UserFavorite")
 
     class Meta:
         verbose_name = '文章'
@@ -94,6 +95,6 @@ class Comment(models.Model):
 
 class UserFavorite(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE)
-    fav_id = models.IntegerField(default=0)
-    # fav_id = models.ForeignKey(Post,on_delete=models.CASCADE)
+    # fav_id = models.IntegerField(default=0)
+    post = models.ForeignKey(Post,on_delete=models.CASCADE)
     fav_type = models.IntegerField(default=0)
