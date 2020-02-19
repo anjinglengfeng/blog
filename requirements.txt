@@ -11,9 +11,6 @@ idna==2.8
 Markdown==2.6.11
 oauthlib==3.1.0
 Pillow==7.0.0
-PyQt5==5.11.3
-PyQt5-sip==4.19.15
-pyqt5-tools==5.11.3.1.4
 python-dotenv==0.10.1
 python-slugify==4.0.0
 python3-openid==3.1.0

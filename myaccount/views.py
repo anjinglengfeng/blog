@@ -4,6 +4,7 @@ from .forms import ProfileForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect
 from blog.models import Post, UserFavorite
+from django.contrib.auth.models import User
 
 
 @login_required
@@ -52,8 +53,15 @@ def my_post(request):
 
 def fav_post(request):
     user = request.user
-    fav_id = UserFavorite.objects.filter(user=user).get('fav_id')
-    print(fav_id)
-    posts = Post.objects.filter(user=user, id=fav_id)
-    # fav_posts = UserFavorite.objects.filter(user=user)
-    return render(request, 'account/my_post.html', {'posts': posts})
+    # fav_id = UserFavorite.objects.filter(user=user)
+    # fav_posts = Post.objects.filter(user=user)
+    # posts = Post.objects.filter(user=user, id=fav_id)
+    # fav_posts = user.userfavorite.filter(user=user)
+    # user = UserProfile.objects.filter(user=user)
+
+
+    # usr = Post.objects.filter(user=user).first()
+    post = Post.objects.filter(user=user)
+    print(user.id)
+    # post = usr.post.all()
+    return render(request, 'account/fav_post.html',{'posts': post})
