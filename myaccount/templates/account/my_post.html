@@ -36,6 +36,10 @@
     <!-- 引入layer.js -->
     <script src="{% static 'layer/layer.js' %}"></script>
 
+        <script>
+            document.getElementById('myaccount').innerHTML = "发表的文章<span style=\"float: right\">▶</span>";
+        </script>
+
     <script type="text/javascript">
     function del_article(the, post_id){
         layer.open({

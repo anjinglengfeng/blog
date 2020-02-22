@@ -15,9 +15,8 @@
     <header class="article-header">
       <h1 class="article-title">我的个人资料</h1>
     </header>
-      <p>你好, {{ user.username }}
-
-
+  <div  style="padding-left: 250px; font-size: 20px">
+       <p>你好, {{ user.username }}
         {% if not user.profile.account_verified %}
             (您的邮箱还未验证)
         {% endif %}
@@ -32,7 +31,12 @@
         </ul>
     </div>
   </div>
+
+  </div>
 </section>
+     <script>
+        document.getElementById('profile').innerHTML = "个人资料<span style=\"float: right\">▶</span>";
+    </script>
 {% endblock %}
 
 

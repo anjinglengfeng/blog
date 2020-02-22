@@ -39,10 +39,10 @@
       </div>
       <div class="collapse navbar-collapse" id="header-navbar">
         <ul class="nav navbar-nav navbar-right">
-          <li class="hidden-index active"><a data-cont="博客首页" href="{% url 'blog:post_list' %}">博客首页</a></li>
-            <li><a href="{% url 'blog:tag_list' %}">标签云</a></li>
-          <li><a href="{% url 'blog:readers' %}" rel="nofollow">读者墙</a></li>
-          <li><a href="{% url 'blog:links' %}" rel="nofollow">友情链接</a></li>
+          <li id="index_nav" class="hidden-index"><a data-cont="博客首页" href="{% url 'blog:post_list' %}">博客首页</a></li>
+            <li id="tag_nav"><a href="{% url 'blog:tag_list' %}">标签云</a></li>
+          <li id="reader_nav"><a href="{% url 'blog:readers' %}" rel="nofollow">读者墙</a></li>
+          <li id="link_nav"><a href="{% url 'blog:links' %}" rel="nofollow">友情链接</a></li>
 
             <li class="dropdown">
               <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" rel="nofollow">关注本站 <span class="caret"></span></a>

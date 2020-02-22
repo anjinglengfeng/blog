@@ -17,7 +17,7 @@
       <h1 class="article-title">我的个人资料</h1>
     </header>
 
-      <div class="form-wrapper">
+      <div class="form-wrapper"  style="padding-left: 250px; font-size: 15px">
    <form method="post" action="" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in form %}
@@ -35,10 +35,11 @@
       </div>
    </form>
 </div>
-
-
   </div>
 </section>
+    <script>
+        document.getElementById('update').innerHTML = "更新资料<span style=\"float: right\">▶</span>";
+    </script>
 {% endblock %}
 
 

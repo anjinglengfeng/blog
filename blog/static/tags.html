@@ -7,15 +7,7 @@
 
 {% block content-wrap %}
 <section class="container container-page">
-  <div class="pageside">
-    <div class="pagemenus">
-      <ul class="pagemenu">
-        <li><a href="{% url 'blog:tag_list' %}">标签云</a></li>
-        <li><a href="{% url 'blog:readers' %}">读者墙</a></li>
-        <li><a href="{% url 'blog:links' %}">友情链接</a></li>
-      </ul>
-    </div>
-  </div>
+   {% include 'blog/static/pageside.html' %}
   <div class="content">
     <header class="article-header">
       <h1 class="article-title">标签云</h1>
@@ -27,4 +19,8 @@
     </ul>
   </div>
 </section>
+    <script>
+        $('#tag_nav').addClass('active');
+        document.getElementById('tag_side').innerHTML = "标签云<span style=\"float: right\">▶</span>";
+    </script>
 {% endblock %}
