@@ -50,7 +50,10 @@ INSTALLED_APPS = [
     'myaccount',
     'widget_tweaks',
     'notice',
+    'crispy_forms', # bootstrap表单样式
 ]
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
