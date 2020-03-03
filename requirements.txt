@@ -7,6 +7,7 @@ django-allauth==0.41.0
 django-taggit==0.22.2
 django-uuslug==1.2.0
 django-widget-tweaks==1.4.5
+django-crispy-forms==1.9.0
 idna==2.8
 Markdown==2.6.11
 oauthlib==3.1.0
